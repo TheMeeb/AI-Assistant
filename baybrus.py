@@ -9,7 +9,7 @@ source = sr.Microphone()
 #functions-----------------------------------------------------------------
 # speaks-------------------------------------------------------------------
 def Speak(text):
-    rate = 100;
+    rate = 100
     engine = pyttsx3.init()
     voices = engine.getProperty('voices')
     engine.setProperty('voice', voices[0].id)

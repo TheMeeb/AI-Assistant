@@ -3,7 +3,7 @@ import pyttsx3
 import speech_recognition as sr
 import time
 import random 
-from openpyxl import *
+from openpyxl import load_workbook 
 #variables-----------------------------------------------------------------
 r = sr.Recognizer()
 keywords = [("baybrus",1),("hey baybrus",1)]
@@ -57,23 +57,25 @@ def recognizer_main():
             print("Couldn't understand: {0}".format(e))
 # Excel response function ------------------------------------------------------
 def excel():
-    wb = load_workbook("file.xlsx")
-    wu = wb.get_sheet_by_name("User")
-    wr = wb.get_sheet_name("Replies")
-
-    global Hello_list
-    global how_are_you
-    urow1 = wu['1']
-    urow2 = wu['2']
-    hello_list = [urow1[x].value for x in range(lens(urow1))]
-    how_are_you = [urow2[x].value for x in range(lens(urow2))]
+    # Load the workbook
+    wb = load_workbook("/home/meeb/project/file.xlsx")
     
-    global reply_hello_list
-    global reply_how_are_you
-    rrow1 = wr['1']
-    rrow2 = wr['2']
-    reply_hello_list= [urow1[x].value for x in range(lens(urow1))]
-    reply_hello_list= [urow2[x].value for x in range(lens(urow2))]
+    # Accessing 'User' worksheet
+    wu = wb['User']
+    
+    # Accessing 'Replies' worksheet
+    wr = wb['Replies']
+    
+    # Initialize lists
+    global hello_list, how_are_you, reply_hello_list, reply_how_are_you
+    
+    # Extracting values from rows in 'User' worksheet
+    hello_list = [cell.value for cell in wu['1']]
+    how_are_you = [cell.value for cell in wu['2']]
+    
+    # Extracting values from rows in 'Replies' worksheet
+    reply_hello_list = [cell.value for cell in wr['1']]
+    reply_how_are_you = [cell.value for cell in wr['2']]
 #mainprogram---------------------------------------------------------------
 excel()
 while 1:

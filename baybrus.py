@@ -3,7 +3,9 @@ import pyttsx3
 import speech_recognition as sr
 import time
 import random 
-from openpyxl import load_workbook 
+from openpyxl import load_workbook
+import time
+import datetime
 #variables-----------------------------------------------------------------
 r = sr.Recognizer()
 keywords = [("baybrus",1),("hey baybrus",1)]
@@ -40,15 +42,32 @@ def recognizer_main():
         audio = r.listen(source)
         data = ""
         try:
-            data = r.recognize_google(audio).lower()  # Correct method usage here--------------
             print("You said: " + data)
             # Respond to different commands-------------------------------------
             if data in hello_list:
-                Speak(random.choice(reply_hello))
+                hour = datetime.datetime.now().hour
+                if hour >=0 and hour <12:
+                    Speak("Good Morning")
+                elif hour <= 12 and hour >18:
+                    speak("Good Afternoon")
+                else:
+                    Speak("Good Evening")
                 time.sleep(2)
             elif data in how_are_you:
                 Speak(random.choice(reply_hello_are_you))
-                time.sleep(2)
+            elif "What time it is ?" in data :
+                strtime = date.time.datetime.now().strtime("%H:%M")
+                Speak(f"the time is {strtime}")
+            elif "What day it is ?" in data :
+                day = datetime.datetime.today().weekday() + 1
+                Day_dict = {1: 'Monday', 2: 'Tuesday', 3: 'Wednesday',
+                            4: 'Thursday', 5: 'Friday', 6: 'Saturday',
+                            7: 'Sunday'}
+                if day in Day_dict.keys():
+                    day_of_the_week = Day_dict[day]
+                    print(day_of_the_week)
+                    Speak("The day is " + day_of_the_week)
+                    time.sleep(2)
             else:
                 Speak("I am sorry sir")
         except sr.UnknownValueError:
